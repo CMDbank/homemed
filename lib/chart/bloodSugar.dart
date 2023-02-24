@@ -10,8 +10,12 @@ import 'package:charts_flutter/flutter.dart' as charts;
 
 import 'dart:math';
 
+import 'package:jitsi_meet_wrapper_example/config.dart';
+
 class bschartScreen extends StatefulWidget {
-  const bschartScreen({Key? key}) : super(key: key);
+  final id_user;
+  final id_patient;
+  bschartScreen({this.id_user, this.id_patient});
 
   @override
   State<bschartScreen> createState() => _bschartScreenState();
@@ -27,7 +31,7 @@ class _bschartScreenState extends State<bschartScreen>
   int _selectedTabIndex = 0;
 
   List<Map<String, dynamic>> dataList = [];
-  
+
   int dateToInt(String date, String time) {
     DateTime dateTime = DateTime.parse(date);
     String hour = time.substring(0, 2);
@@ -47,11 +51,13 @@ class _bschartScreenState extends State<bschartScreen>
     return customFormat.format(DateTime(year, date.month, date.day, date.hour,
         date.minute, date.second, date.millisecond, date.microsecond));
   }
+
   String myFormat(String datefm) {
     var date = DateTime.parse(datefm);
     var customFormat = DateFormat("MMMM yyyy", "th_TH");
     return customFormat.format(date);
   }
+
   myinfo() {
     for (var data in dataList) {
       apiData.add(new _bsRateData(dateToInt(data["date"], data["time"]),
@@ -71,17 +77,17 @@ class _bschartScreenState extends State<bschartScreen>
             var data = _data[index];
             return Column(
               children: [
-                if (data['month_year_th'] != null) Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 5),
-                            child: Text(data['month_year_th'],
-                                            style: GoogleFonts.notoSans(
-                                                )),
-                          ),
-                        ],
+                if (data['month_year_th'] != null)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Text(data['month_year_th'],
+                            style: GoogleFonts.notoSans()),
                       ),
+                    ],
+                  ),
                 if (data['date'] != null)
                   Container(
                     height: 80,
@@ -102,23 +108,23 @@ class _bschartScreenState extends State<bschartScreen>
                           ),
                           title: data["glucos"] >= 100
                               ? Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text("${data["glucos"]}",
-                                      style: GoogleFonts.notoSans(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 46)),
-                                ],
-                              )
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text("${data["glucos"]}",
+                                        style: GoogleFonts.notoSans(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 46)),
+                                  ],
+                                )
                               : Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text("${data["glucos"]}",
-                                      style: GoogleFonts.notoSans(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 46)),
-                                ],
-                              ),
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text("${data["glucos"]}",
+                                        style: GoogleFonts.notoSans(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 46)),
+                                  ],
+                                ),
                           trailing: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,8 +138,10 @@ class _bschartScreenState extends State<bschartScreen>
                                       : data["status"] == 'สูง'
                                           ? Color.fromARGB(255, 248, 210, 119)
                                           : data["status"] == 'ปกติ'
-                                              ? Color.fromARGB(255, 97, 210, 164)
-                                              : Color.fromARGB(255, 4, 175, 237),
+                                              ? Color.fromARGB(
+                                                  255, 97, 210, 164)
+                                              : Color.fromARGB(
+                                                  255, 4, 175, 237),
                                   borderRadius: BorderRadius.circular(20.0),
                                 ),
                                 child: Column(
@@ -167,34 +175,34 @@ class _bschartScreenState extends State<bschartScreen>
     //print(response.statusCode);
     var headers = {'Content-Type': 'application/json'};
 
-    var request = http.Request(
-        'GET', Uri.parse('http://192.168.1.129:8000/get_glucosFilter/'));
+    var request =
+        http.Request('GET', Uri.parse(baseUrl + '/get_glucosFilter/'));
     switch (duration) {
       case "week":
         request.body = json.encode({
-          "user_id": "1101700272371",
-          "patient_id": "1234567890132",
+          "user_id": widget.id_user,
+          "patient_id": widget.id_patient,
           "duration": "week"
         });
         break;
       case "month":
         request.body = json.encode({
-          "user_id": "1101700272371",
-          "patient_id": "1234567890132",
+          "user_id": widget.id_user,
+          "patient_id": widget.id_patient,
           "duration": "month"
         });
         break;
       case "quarter":
         request.body = json.encode({
-          "user_id": "1101700272371",
-          "patient_id": "1234567890132",
+          "user_id": widget.id_user,
+          "patient_id": widget.id_patient,
           "duration": "quarter"
         });
         break;
       case "half":
         request.body = json.encode({
-          "user_id": "1101700272371",
-          "patient_id": "1234567890132",
+          "user_id": widget.id_user,
+          "patient_id": widget.id_patient,
           "duration": "half"
         });
         break;
@@ -390,85 +398,89 @@ class _bschartScreenState extends State<bschartScreen>
             Center(
               child: [
                 Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5, left: 13,right: 13),
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 5, left: 13, right: 13),
+                      child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 224, 224, 224),
+                              borderRadius: BorderRadius.circular(10.0)),
+                          child: SimpleScatterPlotChart.withSampleData()),
+                    ),
+                    Padding(
+                        padding:
+                            const EdgeInsets.only(top: 20, left: 13, right: 13),
                         child: Container(
                           width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 224, 224, 224),
-                                borderRadius: BorderRadius.circular(10.0)),
-                            child: SimpleScatterPlotChart.withSampleData()),
-                      ),
-                      Padding(                        
-                          padding: const EdgeInsets.only(top: 20,left: 13,right: 13),
-                          child: Container(
-                            width: double.infinity,
-                            child: myinfo(),
-                          )
-                      ),
-                    ],
-                  ),
+                          child: myinfo(),
+                        )),
+                  ],
+                ),
                 Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5, left: 13,right: 13),
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 5, left: 13, right: 13),
+                      child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 224, 224, 224),
+                              borderRadius: BorderRadius.circular(10.0)),
+                          child: SimpleScatterPlotChart.withSampleData()),
+                    ),
+                    Padding(
+                        padding:
+                            const EdgeInsets.only(top: 20, left: 13, right: 13),
                         child: Container(
                           width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 224, 224, 224),
-                                borderRadius: BorderRadius.circular(10.0)),
-                            child: SimpleScatterPlotChart.withSampleData()),
-                      ),
-                      Padding(                        
-                          padding: const EdgeInsets.only(top: 20,left: 13,right: 13),
-                          child: Container(
-                            width: double.infinity,
-                            child: myinfo(),
-                          )
-                      ),
-                    ],
-                  ),
+                          child: myinfo(),
+                        )),
+                  ],
+                ),
                 Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5, left: 13,right: 13),
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 5, left: 13, right: 13),
+                      child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 224, 224, 224),
+                              borderRadius: BorderRadius.circular(10.0)),
+                          child: SimpleScatterPlotChart.withSampleData()),
+                    ),
+                    Padding(
+                        padding:
+                            const EdgeInsets.only(top: 20, left: 13, right: 13),
                         child: Container(
                           width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 224, 224, 224),
-                                borderRadius: BorderRadius.circular(10.0)),
-                            child: SimpleScatterPlotChart.withSampleData()),
-                      ),
-                      Padding(                        
-                          padding: const EdgeInsets.only(top: 20,left: 13,right: 13),
-                          child: Container(
-                            width: double.infinity,
-                            child: myinfo(),
-                          )
-                      ),
-                    ],
-                  ),
+                          child: myinfo(),
+                        )),
+                  ],
+                ),
                 Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5, left: 13,right: 13),
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 5, left: 13, right: 13),
+                      child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 224, 224, 224),
+                              borderRadius: BorderRadius.circular(10.0)),
+                          child: SimpleScatterPlotChart.withSampleData()),
+                    ),
+                    Padding(
+                        padding:
+                            const EdgeInsets.only(top: 20, left: 13, right: 13),
                         child: Container(
                           width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 224, 224, 224),
-                                borderRadius: BorderRadius.circular(10.0)),
-                            child: SimpleScatterPlotChart.withSampleData()),
-                      ),
-                      Padding(                        
-                          padding: const EdgeInsets.only(top: 20,left: 13,right: 13),
-                          child: Container(
-                            width: double.infinity,
-                            child: myinfo(),
-                          )
-                      ),
-                    ],
-                  ),
+                          child: myinfo(),
+                        )),
+                  ],
+                ),
               ][_tabController.index],
             ),
           ],

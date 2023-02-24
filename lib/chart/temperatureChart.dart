@@ -11,8 +11,12 @@ import 'package:charts_flutter/flutter.dart' as charts;
 
 import 'dart:math';
 
+import 'package:jitsi_meet_wrapper_example/config.dart';
+
 class tmpchartScreen extends StatefulWidget {
-  const tmpchartScreen({Key? key}) : super(key: key);
+  final id_user;
+  final id_patient;
+  tmpchartScreen({this.id_user, this.id_patient});
 
   @override
   State<tmpchartScreen> createState() => _tmpchartScreenState();
@@ -67,17 +71,17 @@ class _tmpchartScreenState extends State<tmpchartScreen>
             var data = _data[index];
             return Column(
               children: [
-                if (data['month_year_th'] != null) Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 5),
-                            child: Text(data['month_year_th'],
-                                            style: GoogleFonts.notoSans(
-                                                )),
-                          ),
-                        ],
+                if (data['month_year_th'] != null)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Text(data['month_year_th'],
+                            style: GoogleFonts.notoSans()),
                       ),
+                    ],
+                  ),
                 if (data['date'] != null)
                   Container(
                     height: 80,
@@ -150,34 +154,33 @@ class _tmpchartScreenState extends State<tmpchartScreen>
     //print(response.statusCode);
     var headers = {'Content-Type': 'application/json'};
 
-    var request = http.Request(
-        'GET', Uri.parse('http://192.168.1.129:8000/get_tempfilter/'));
+    var request = http.Request('GET', Uri.parse(baseUrl + '/get_tempfilter/'));
     switch (duration) {
       case "week":
         request.body = json.encode({
-          "user_id": "1101700272371",
-          "patient_id": "1234567890132",
+          "user_id": widget.id_user,
+          "patient_id": widget.id_patient,
           "duration": "week"
         });
         break;
       case "month":
         request.body = json.encode({
-          "user_id": "1101700272371",
-          "patient_id": "1234567890132",
+          "user_id": widget.id_user,
+          "patient_id": widget.id_patient,
           "duration": "month"
         });
         break;
       case "quarter":
         request.body = json.encode({
-          "user_id": "1101700272371",
-          "patient_id": "1234567890132",
+          "user_id": widget.id_user,
+          "patient_id": widget.id_patient,
           "duration": "quarter"
         });
         break;
       case "half":
         request.body = json.encode({
-          "user_id": "1101700272371",
-          "patient_id": "1234567890132",
+          "user_id": widget.id_user,
+          "patient_id": widget.id_patient,
           "duration": "half"
         });
         break;
@@ -370,85 +373,89 @@ class _tmpchartScreenState extends State<tmpchartScreen>
             Center(
               child: [
                 Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5, left: 13,right: 13),
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 5, left: 13, right: 13),
+                      child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 224, 224, 224),
+                              borderRadius: BorderRadius.circular(10.0)),
+                          child: SimpleScatterPlotChart.withSampleData()),
+                    ),
+                    Padding(
+                        padding:
+                            const EdgeInsets.only(top: 20, left: 13, right: 13),
                         child: Container(
                           width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 224, 224, 224),
-                                borderRadius: BorderRadius.circular(10.0)),
-                            child: SimpleScatterPlotChart.withSampleData()),
-                      ),
-                      Padding(                        
-                          padding: const EdgeInsets.only(top: 20,left: 13,right: 13),
-                          child: Container(
-                            width: double.infinity,
-                            child: myinfo(),
-                          )
-                      ),
-                    ],
-                  ),
+                          child: myinfo(),
+                        )),
+                  ],
+                ),
                 Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5, left: 13,right: 13),
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 5, left: 13, right: 13),
+                      child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 224, 224, 224),
+                              borderRadius: BorderRadius.circular(10.0)),
+                          child: SimpleScatterPlotChart.withSampleData()),
+                    ),
+                    Padding(
+                        padding:
+                            const EdgeInsets.only(top: 20, left: 13, right: 13),
                         child: Container(
                           width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 224, 224, 224),
-                                borderRadius: BorderRadius.circular(10.0)),
-                            child: SimpleScatterPlotChart.withSampleData()),
-                      ),
-                      Padding(                        
-                          padding: const EdgeInsets.only(top: 20,left: 13,right: 13),
-                          child: Container(
-                            width: double.infinity,
-                            child: myinfo(),
-                          )
-                      ),
-                    ],
-                  ),
+                          child: myinfo(),
+                        )),
+                  ],
+                ),
                 Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5, left: 13,right: 13),
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 5, left: 13, right: 13),
+                      child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 224, 224, 224),
+                              borderRadius: BorderRadius.circular(10.0)),
+                          child: SimpleScatterPlotChart.withSampleData()),
+                    ),
+                    Padding(
+                        padding:
+                            const EdgeInsets.only(top: 20, left: 13, right: 13),
                         child: Container(
                           width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 224, 224, 224),
-                                borderRadius: BorderRadius.circular(10.0)),
-                            child: SimpleScatterPlotChart.withSampleData()),
-                      ),
-                      Padding(                        
-                          padding: const EdgeInsets.only(top: 20,left: 13,right: 13),
-                          child: Container(
-                            width: double.infinity,
-                            child: myinfo(),
-                          )
-                      ),
-                    ],
-                  ),
+                          child: myinfo(),
+                        )),
+                  ],
+                ),
                 Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5, left: 13,right: 13),
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 5, left: 13, right: 13),
+                      child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 224, 224, 224),
+                              borderRadius: BorderRadius.circular(10.0)),
+                          child: SimpleScatterPlotChart.withSampleData()),
+                    ),
+                    Padding(
+                        padding:
+                            const EdgeInsets.only(top: 20, left: 13, right: 13),
                         child: Container(
                           width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 224, 224, 224),
-                                borderRadius: BorderRadius.circular(10.0)),
-                            child: SimpleScatterPlotChart.withSampleData()),
-                      ),
-                      Padding(                        
-                          padding: const EdgeInsets.only(top: 20,left: 13,right: 13),
-                          child: Container(
-                            width: double.infinity,
-                            child: myinfo(),
-                          )
-                      ),
-                    ],
-                  ),
+                          child: myinfo(),
+                        )),
+                  ],
+                ),
               ][_tabController.index],
             ),
           ],

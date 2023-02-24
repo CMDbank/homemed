@@ -516,7 +516,9 @@ class _menuNewState extends State<menuNew> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        hrchartScreen()));
+                                                        hrchartScreen(
+                                                          id_user: idcard,
+                                                        )));
                                           },
                                           child: SizedBox(
                                               height: 110,
@@ -546,7 +548,9 @@ class _menuNewState extends State<menuNew> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        tmpchartScreen()));
+                                                        tmpchartScreen(
+                                                          id_user: idcard,
+                                                        )));
                                           },
                                           child: SizedBox(
                                               height: 110,
@@ -739,7 +743,9 @@ class _menuNewState extends State<menuNew> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        bschartScreen()));
+                                                        bschartScreen(
+                                                          id_user: idcard,
+                                                        )));
                                           },
                                           child: SizedBox(
                                               height: 110,
@@ -768,7 +774,9 @@ class _menuNewState extends State<menuNew> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        oxgchartScreen()));
+                                                        oxgchartScreen(
+                                                          id_user: idcard,
+                                                        )));
                                           },
                                           child: SizedBox(
                                               height: 110,

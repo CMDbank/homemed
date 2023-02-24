@@ -22,6 +22,8 @@ class history2 extends StatefulWidget {
 }
 
 class _history2State extends State<history2> {
+  String? id_patient;
+  String? idcard;
   static var _data;
   @override
   void initState() {
@@ -34,6 +36,10 @@ class _history2State extends State<history2> {
 
     String? idcardNumberpatients = prefs.getString("ID");
     String? patient_id = prefs.getString("id_partirntinfo");
+    setState(() {
+      id_patient = patient_id;
+      idcard = idcardNumberpatients;
+    });
 
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request('GET', Uri.parse(baseUrl + '/get_patientdata/'));
@@ -181,8 +187,9 @@ class _history2State extends State<history2> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                hrchartScreen()));
+                                            builder: (context) => hrchartScreen(
+                                                id_patient: id_patient,
+                                                id_user: idcard)));
                                   },
                                   child: SizedBox(
                                       height: 110,
@@ -215,7 +222,9 @@ class _history2State extends State<history2> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                tmpchartScreen()));
+                                                tmpchartScreen(
+                                                    id_patient: id_patient,
+                                                    id_user: idcard)));
                                   },
                                   child: SizedBox(
                                       height: 110,
@@ -437,8 +446,9 @@ class _history2State extends State<history2> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                bschartScreen()));
+                                            builder: (context) => bschartScreen(
+                                                id_patient: id_patient,
+                                                id_user: idcard)));
                                   },
                                   child: SizedBox(
                                       height: 110,
@@ -469,7 +479,9 @@ class _history2State extends State<history2> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                oxgchartScreen()));
+                                                oxgchartScreen(
+                                                    id_patient: id_patient,
+                                                    id_user: idcard)));
                                   },
                                   child: SizedBox(
                                       height: 110,
@@ -499,8 +511,10 @@ class _history2State extends State<history2> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                bpchartScreen()));
+                                            builder: (context) => bpchartScreen(
+                                                  id_patient: id_patient,
+                                                  id_user: idcard,
+                                                )));
                                   },
                                   child: SizedBox(
                                       height: 160,

@@ -5,13 +5,15 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
-
+import 'package:jitsi_meet_wrapper_example/config.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 import 'dart:math';
 
 class hrchartScreen extends StatefulWidget {
-  const hrchartScreen({Key? key}) : super(key: key);
+  final id_user;
+  final id_patient;
+  hrchartScreen({this.id_user, this.id_patient});
 
   @override
   State<hrchartScreen> createState() => _chartScreenState();
@@ -26,7 +28,7 @@ class _chartScreenState extends State<hrchartScreen>
 
   List<Map<String, dynamic>> dataList = [];
   List<Map<String, dynamic>> _data = [];
-  
+
   int dateToInt(String date, String time) {
     DateTime dateTime = DateTime.parse(date);
     String hour = time.substring(0, 2);
@@ -64,104 +66,104 @@ class _chartScreenState extends State<hrchartScreen>
       physics: ScrollPhysics(),
       child: SizedBox(
         width: 360,
-        height: heightList * 85,        
-          child: ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            itemCount:_data.length,
-            itemBuilder: (BuildContext context, int index) {
-              var data = _data[index];
-              return Column(
+        height: heightList * 85,
+        child: ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: _data.length,
+          itemBuilder: (BuildContext context, int index) {
+            var data = _data[index];
+            return Column(
+              children: [
+                if (data['month_year_th'] != null)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      if (data['month_year_th'] != null) Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 5),
-                            child: Text(data['month_year_th'],
-                                            style: GoogleFonts.notoSans(
-                                                )),
-                          ),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Text(data['month_year_th'],
+                            style: GoogleFonts.notoSans()),
                       ),
-                       if (data['date'] != null) Container(
-                        height:80,
-                         child: Card(
-                            child: ListTile(
-                                leading: Column(
-                                  
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                    ],
+                  ),
+                if (data['date'] != null)
+                  Container(
+                    height: 80,
+                    child: Card(
+                      child: ListTile(
+                          leading: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text("${data["time"]}",
+                                  style: GoogleFonts.notoSans(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 28)),
+                              Text(dateTime(data["date"]),
+                                  style: GoogleFonts.notoSans(
+                                      fontSize: 12, color: Colors.grey[600]))
+                            ],
+                          ),
+                          title: data["pulse"] >= 100
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Text("${data["time"]}",
+                                    Text("${data["pulse"]}",
                                         style: GoogleFonts.notoSans(
-                                            fontWeight: FontWeight.bold, fontSize: 28)),
-                                    Text(dateTime(data["date"]),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 46)),
+                                  ],
+                                )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text("${data["pulse"]}",
                                         style: GoogleFonts.notoSans(
-                                            fontSize: 12, color: Colors.grey[600]))
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 46)),
                                   ],
                                 ),
-                                title: data["pulse"] >= 100
-                                    ? Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Text("${data["pulse"]}",
-                                            style: GoogleFonts.notoSans(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 46)),
-                                      ],
-                                    )
-                                    : Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Text("${data["pulse"]}",
-                                            style: GoogleFonts.notoSans(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 46)),
-                                      ],
-                                    ),
-                                trailing: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                          trailing: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 40,
+                                height: 26,
+                                decoration: BoxDecoration(
+                                  color: data["status_hr"] == 'สูง'
+                                      ? Color.fromARGB(255, 220, 41, 78)
+                                      : data["status_hr"] == 'medium'
+                                          ? Color.fromARGB(255, 248, 210, 119)
+                                          : Color.fromARGB(255, 97, 210, 164),
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Container(
-                                      width: 40,
-                                      height: 26,
-                                      decoration: BoxDecoration(
-                                        color: data["status_hr"] == 'สูง'
-                                            ? Color.fromARGB(255, 220, 41, 78)
-                                            : data["status_hr"] == 'medium'
-                                                ? Color.fromARGB(255, 248, 210, 119)
-                                                : Color.fromARGB(255, 97, 210, 164),
-                                        borderRadius: BorderRadius.circular(20.0),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Text("${data["status_hr"]}",
-                                              style: GoogleFonts.notoSansThai(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white)),
-                                        ],
-                                      ),
-                                    ),
-                                    Text("bpm",
+                                    Text("${data["status_hr"]}",
                                         style: GoogleFonts.notoSansThai(
-                                            color: Colors.grey))
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white)),
                                   ],
-                                )),
-                          ),
-                       ),
-                    ],
-                  );
-            },
-          ),
-        
+                                ),
+                              ),
+                              Text("bpm",
+                                  style: GoogleFonts.notoSansThai(
+                                      color: Colors.grey))
+                            ],
+                          )),
+                    ),
+                  ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
 
   Future<http.StreamedResponse> fetchHeartRateData(String duration) async {
-    final url = 'http://192.168.1.163:8000/get_hrfilter';
+    final url = baseUrl + '/get_hrfilter';
     //final response = await http.get(Uri.parse(url));
     //print(response.statusCode);
     var headers = {'Content-Type': 'application/json'};
@@ -171,29 +173,29 @@ class _chartScreenState extends State<hrchartScreen>
     switch (duration) {
       case "week":
         request.body = json.encode({
-          "user_id": "1101700272371",
-          "patient_id": "1234567890132",
+          "user_id": widget.id_user,
+          "patient_id": widget.id_patient,
           "duration": "week"
         });
         break;
       case "month":
         request.body = json.encode({
-          "user_id": "1101700272371",
-          "patient_id": "1234567890132",
+          "user_id": widget.id_user,
+          "patient_id": widget.id_patient,
           "duration": "month"
         });
         break;
       case "quarter":
         request.body = json.encode({
-          "user_id": "1101700272371",
-          "patient_id": "1234567890132",
+          "user_id": widget.id_user,
+          "patient_id": widget.id_patient,
           "duration": "quarter"
         });
         break;
       case "half":
         request.body = json.encode({
-          "user_id": "1101700272371",
-          "patient_id": "1234567890132",
+          "user_id": widget.id_user,
+          "patient_id": widget.id_patient,
           "duration": "half"
         });
         break;
@@ -210,32 +212,28 @@ class _chartScreenState extends State<hrchartScreen>
       setState(() {
         dataList = jsonResponse
             .map((data) => {
-              "month_year_th": data["month_year_th"],
+                  "month_year_th": data["month_year_th"],
                   "date": data["date"],
                   "time": data["time"].substring(0, 5),
                   "status_hr": data["status_hr"],
                   "pulse": data["pulse"],
-                  
                 })
             .toList();
-          for (var data in dataList) {
-
-            if (_data.every((d) => d['month_year_th'] != data['month_year_th'])) {
-              _data.add({
-                "month_year_th": data['month_year_th'],
-                // "date": data["date"],
-                //   "time": data["time"].substring(0, 5),
-                //   "status_hr": data["status_hr"],
-                //   "pulse": data["pulse"],
-              });
-            }
+        for (var data in dataList) {
+          if (_data.every((d) => d['month_year_th'] != data['month_year_th'])) {
+            _data.add({
+              "month_year_th": data['month_year_th'],
+              // "date": data["date"],
+              //   "time": data["time"].substring(0, 5),
+              //   "status_hr": data["status_hr"],
+              //   "pulse": data["pulse"],
+            });
+          }
           _data.add({
-
-                  "date": data["date"],
-                  "time": data["time"].substring(0, 5),
-                  "status_hr": data["status_hr"],
-                  "pulse": data["pulse"],
-
+            "date": data["date"],
+            "time": data["time"].substring(0, 5),
+            "status_hr": data["status_hr"],
+            "pulse": data["pulse"],
           });
         }
       });
@@ -397,81 +395,85 @@ class _chartScreenState extends State<hrchartScreen>
                   Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 5, left: 13,right: 13),
+                        padding:
+                            const EdgeInsets.only(top: 5, left: 13, right: 13),
                         child: Container(
-                          width: double.infinity,
+                            width: double.infinity,
                             decoration: BoxDecoration(
                                 color: Color.fromARGB(255, 224, 224, 224),
                                 borderRadius: BorderRadius.circular(10.0)),
                             child: SimpleScatterPlotChart.withSampleData()),
                       ),
-                      Padding(                        
-                          padding: const EdgeInsets.only(top: 20,left: 13,right: 13),
+                      Padding(
+                          padding: const EdgeInsets.only(
+                              top: 20, left: 13, right: 13),
                           child: Container(
                             width: double.infinity,
                             child: myinfo(),
-                          )
-                      ),
+                          )),
                     ],
                   ),
                   Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 5, left: 13,right: 13),
+                        padding:
+                            const EdgeInsets.only(top: 5, left: 13, right: 13),
                         child: Container(
-                          width: double.infinity,
+                            width: double.infinity,
                             decoration: BoxDecoration(
                                 color: Color.fromARGB(255, 224, 224, 224),
                                 borderRadius: BorderRadius.circular(10.0)),
                             child: SimpleScatterPlotChart.withSampleData()),
                       ),
-                      Padding(                        
-                          padding: const EdgeInsets.only(top: 20,left: 13,right: 13),
+                      Padding(
+                          padding: const EdgeInsets.only(
+                              top: 20, left: 13, right: 13),
                           child: Container(
                             width: double.infinity,
                             child: myinfo(),
-                          )
-                      ),
+                          )),
                     ],
                   ),
                   Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 5, left: 13,right: 13),
+                        padding:
+                            const EdgeInsets.only(top: 5, left: 13, right: 13),
                         child: Container(
-                          width: double.infinity,
+                            width: double.infinity,
                             decoration: BoxDecoration(
                                 color: Color.fromARGB(255, 224, 224, 224),
                                 borderRadius: BorderRadius.circular(10.0)),
                             child: SimpleScatterPlotChart.withSampleData()),
                       ),
-                      Padding(                        
-                          padding: const EdgeInsets.only(top: 20,left: 13,right: 13),
+                      Padding(
+                          padding: const EdgeInsets.only(
+                              top: 20, left: 13, right: 13),
                           child: Container(
                             width: double.infinity,
                             child: myinfo(),
-                          )
-                      ),
+                          )),
                     ],
                   ),
                   Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 5, left: 13,right: 13),
+                        padding:
+                            const EdgeInsets.only(top: 5, left: 13, right: 13),
                         child: Container(
-                          width: double.infinity,
+                            width: double.infinity,
                             decoration: BoxDecoration(
                                 color: Color.fromARGB(255, 224, 224, 224),
                                 borderRadius: BorderRadius.circular(10.0)),
                             child: SimpleScatterPlotChart.withSampleData()),
                       ),
-                      Padding(                        
-                          padding: const EdgeInsets.only(top: 20,left: 13,right: 13),
+                      Padding(
+                          padding: const EdgeInsets.only(
+                              top: 20, left: 13, right: 13),
                           child: Container(
                             width: double.infinity,
                             child: myinfo(),
-                          )
-                      ),
+                          )),
                     ],
                   ),
                 ][_tabController.index],
@@ -515,7 +517,7 @@ class SimpleScatterPlotChart extends StatelessWidget {
       child: new charts.ScatterPlotChart(
         seriesList,
         animate: animate,
-        
+
         selectionModels: [
           new charts.SelectionModelConfig(
               type: charts.SelectionModelType.info,
