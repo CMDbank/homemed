@@ -1,0 +1,55 @@
+Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Expanded(
+                  flex: 6,
+                  child: Container(
+                    color: Colors.amber,
+                  )),
+              Expanded(
+                  flex: 4,
+                  child: Container(
+                    // ignore: prefer_const_constructors
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(50),
+                          topRight: Radius.circular(50),
+                        )),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text("เลขบัตรประจำตัวประชาชน"),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: buildInput1(),
+                        ),
+                        const SizedBox(
+                          height: 17,
+                        ),
+                        Text("หมายเลขโทรศัพท์"),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: buildInput2(),
+                        ),
+                        ElevatedButton(
+                            onPressed: () {
+                              print(email);
+                              print(result);
+                            },
+                            child: Text("submit"))
+                      ],
+                    ),
+                  )),
+            ],
+          ),
+
+          final ButtonStyle flatButtonStyle = TextButton.styleFrom(
+    textStyle: const TextStyle(fontSize: 20),
+    foregroundColor: Colors.white,
+    backgroundColor: const Color(0xFF61D2A4),
+    minimumSize: const Size(300, 50),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(30.0)),
+    ),
+  );
