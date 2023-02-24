@@ -62,75 +62,85 @@ class _oxgchartScreenState extends State<oxgchartScreen>
             var data = _data[index];
             return Column(
               children: [
-                if (data['month_year_th'] != null)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 250, bottom: 3),
-                    child: Text(data['month_year_th'],
-                        style: GoogleFonts.notoSans()),
-                  ),
+                if (data['month_year_th'] != null) Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5),
+                            child: Text(data['month_year_th'],
+                                            style: GoogleFonts.notoSans(
+                                                )),
+                          ),
+                        ],
+                      ),
                 if (data['date'] != null)
-                  Card(
-                    child: ListTile(
-                        leading: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 25),
-                              child: Text("${data["time"]}",
+                  Container(
+                    height: 80,
+                    child: Card(
+                      child: ListTile(
+                          leading: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text("${data["time"]}",
                                   style: GoogleFonts.notoSans(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 26)),
-                            ),
-                            Text(dateTime(data["date"]),
-                                style: GoogleFonts.notoSans(
-                                    fontSize: 12, color: Colors.grey[600]))
-                          ],
-                        ),
-                        title: data["oxygen"] >= 100
-                            ? Padding(
-                                padding: const EdgeInsets.only(left: 90),
-                                child: Text("${data["oxygen"]}",
-                                    style: GoogleFonts.notoSans(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 48)),
-                              )
-                            : Padding(
-                                padding: const EdgeInsets.only(left: 90),
-                                child: Text("${data["oxygen"]}",
-                                    style: GoogleFonts.notoSans(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 48)),
-                              ),
-                        trailing: Column(
-                          children: [
-                            Container(
-                              width: 40,
-                              height: 26,
-                              decoration: BoxDecoration(
-                                color: data["status"] == 'สูง'
-                                    ? Color.fromARGB(255, 220, 41, 78)
-                                    : data["status"] == 'medium'
-                                        ? Color.fromARGB(255, 248, 210, 119)
-                                        : Color.fromARGB(255, 97, 210, 164),
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                      fontSize: 28)),
+                              Text(dateTime(data["date"]),
+                                  style: GoogleFonts.notoSans(
+                                      fontSize: 12, color: Colors.grey[600]))
+                            ],
+                          ),
+                          title: data["oxygen"] >= 100
+                              ? Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Text("${data["status"]}",
-                                      style: GoogleFonts.notoSansThai(
+                                  Text("${data["oxygen"]}",
+                                      style: GoogleFonts.notoSans(
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.white)),
+                                          fontSize: 48)),
+                                ],
+                              )
+                              : Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text("${data["oxygen"]}",
+                                      style: GoogleFonts.notoSans(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 48)),
                                 ],
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 20),
-                              child: Text("%",
+                          trailing: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 40,
+                                height: 26,
+                                decoration: BoxDecoration(
+                                  color: data["status"] == 'สูง'
+                                      ? Color.fromARGB(255, 220, 41, 78)
+                                      : data["status"] == 'medium'
+                                          ? Color.fromARGB(255, 248, 210, 119)
+                                          : Color.fromARGB(255, 97, 210, 164),
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("${data["status"]}",
+                                        style: GoogleFonts.notoSansThai(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white)),
+                                  ],
+                                ),
+                              ),
+                              Text("%",
                                   style: GoogleFonts.notoSansThai(
-                                      color: Colors.grey)),
-                            )
-                          ],
-                        )),
+                                      color: Colors.grey))
+                            ],
+                          )),
+                    ),
                   ),
               ],
             );
@@ -253,23 +263,24 @@ class _oxgchartScreenState extends State<oxgchartScreen>
           icon: Icon(Icons.arrow_back_ios_new, color: Color(0xFF61D2A4)),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Row(
-            children: [
-              Container(
-                  width: 22,
-                  height: 22,
-                  child: Image.asset("assets/oxygen.png",
-                      color: Color(0xFF61D2A4))),
-              Text(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+                width: 22,
+                height: 22,
+                child: Image.asset("assets/oxygen.png",
+                    color: Color(0xFF61D2A4))),
+            Padding(
+              padding: const EdgeInsets.only(right: 40),
+              child: Text(
                 ' ระดับออกซิเจนในเลือด',
                 style: GoogleFonts.notoSansThai(
                     textStyle: TextStyle(fontSize: 20),
                     fontWeight: FontWeight.bold),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         centerTitle: true,
         foregroundColor: Colors.black,
@@ -369,68 +380,85 @@ class _oxgchartScreenState extends State<oxgchartScreen>
             Center(
               child: [
                 Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: Container(
-                          decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 224, 224, 224),
-                              borderRadius: BorderRadius.circular(10.0)),
-                          child: SimpleScatterPlotChart.withSampleData()),
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: myinfo()),
-                  ],
-                ),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5, left: 13,right: 13),
+                        child: Container(
+                          width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 224, 224, 224),
+                                borderRadius: BorderRadius.circular(10.0)),
+                            child: SimpleScatterPlotChart.withSampleData()),
+                      ),
+                      Padding(                        
+                          padding: const EdgeInsets.only(top: 20,left: 13,right: 13),
+                          child: Container(
+                            width: double.infinity,
+                            child: myinfo(),
+                          )
+                      ),
+                    ],
+                  ),
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: Container(
-                          decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 224, 224, 224),
-                              borderRadius: BorderRadius.circular(10.0)),
-                          child: SimpleScatterPlotChart.withSampleData()),
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: myinfo())
-                  ],
-                ),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5, left: 13,right: 13),
+                        child: Container(
+                          width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 224, 224, 224),
+                                borderRadius: BorderRadius.circular(10.0)),
+                            child: SimpleScatterPlotChart.withSampleData()),
+                      ),
+                      Padding(                        
+                          padding: const EdgeInsets.only(top: 20,left: 13,right: 13),
+                          child: Container(
+                            width: double.infinity,
+                            child: myinfo(),
+                          )
+                      ),
+                    ],
+                  ),
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: Container(
-                          decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 224, 224, 224),
-                              borderRadius: BorderRadius.circular(10.0)),
-                          child: SimpleScatterPlotChart.withSampleData()),
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: myinfo())
-                  ],
-                ),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5, left: 13,right: 13),
+                        child: Container(
+                          width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 224, 224, 224),
+                                borderRadius: BorderRadius.circular(10.0)),
+                            child: SimpleScatterPlotChart.withSampleData()),
+                      ),
+                      Padding(                        
+                          padding: const EdgeInsets.only(top: 20,left: 13,right: 13),
+                          child: Container(
+                            width: double.infinity,
+                            child: myinfo(),
+                          )
+                      ),
+                    ],
+                  ),
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: Container(
-                          decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 224, 224, 224),
-                              borderRadius: BorderRadius.circular(10.0)),
-                          child: SimpleScatterPlotChart.withSampleData()),
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: myinfo())
-                  ],
-                ),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5, left: 13,right: 13),
+                        child: Container(
+                          width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 224, 224, 224),
+                                borderRadius: BorderRadius.circular(10.0)),
+                            child: SimpleScatterPlotChart.withSampleData()),
+                      ),
+                      Padding(                        
+                          padding: const EdgeInsets.only(top: 20,left: 13,right: 13),
+                          child: Container(
+                            width: double.infinity,
+                            child: myinfo(),
+                          )
+                      ),
+                    ],
+                  ),
               ][_tabController.index],
             ),
           ],

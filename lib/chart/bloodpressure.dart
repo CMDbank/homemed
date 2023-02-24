@@ -74,47 +74,53 @@ class _bpchartScreenState extends State<bpchartScreen>
             return Column(
               children: [
                 if (data['month_year_th'] != null)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 250, bottom: 3),
-                    child: Text(data['month_year_th'],
-                        style: GoogleFonts.notoSans()),
-                  ),
-                if (data['date'] != null)
-                  Card(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Text(data['month_year_th'],
+                                      style: GoogleFonts.notoSans(
+                                          )),
+                    ),
+                  ],
+                ),
+                if (data['date'] != null)Container(
+                  height: 80,
+                  child: Card(
                     child: ListTile(
                         leading: Column(
+                          
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 25),
-                              child: Text("${data["time"]}",
-                                  style: GoogleFonts.notoSans(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 26)),
-                            ),
+                            Text("${data["time"]}",
+                                style: GoogleFonts.notoSans(
+                                    fontWeight: FontWeight.bold, fontSize: 28)),
                             Text(dateTime(data["date"]),
                                 style: GoogleFonts.notoSans(
                                     fontSize: 12, color: Colors.grey[600]))
                           ],
                         ),
-                        title:
-                            data["systolic"] >= 100 && data["diastolic"] >= 100
-                                ? Padding(
-                                    padding: const EdgeInsets.only(),
-                                    child: Text(
-                                        "${data["systolic"]}/${data["diastolic"]}",
-                                        style: GoogleFonts.notoSans(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 42)),
-                                  )
-                                : Padding(
-                                    padding: const EdgeInsets.only(left: 0),
-                                    child: Text(
-                                        "${data["systolic"]}/${data["diastolic"]}",
-                                        style: GoogleFonts.notoSans(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 42)),
-                                  ),
+                        title: data["systolic"] >= 100 || data["diastolic"] >= 100 
+                            ? Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text("${data["systolic"]}/${data["diastolic"]}",
+                                    style: GoogleFonts.notoSans(
+                                        fontWeight: FontWeight.bold, fontSize: 38)),
+                              ],
+                            )
+                            : Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text("${data["systolic"]}/${data["diastolic"]}",
+                                    style: GoogleFonts.notoSans(
+                                        fontWeight: FontWeight.bold, fontSize: 38)),
+                              ],
+                            ),
                         trailing: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
                               width: 40,
@@ -122,7 +128,7 @@ class _bpchartScreenState extends State<bpchartScreen>
                               decoration: BoxDecoration(
                                 color: data["status_bp"] == 'สูง'
                                     ? Color.fromARGB(255, 220, 41, 78)
-                                    : data["status_bp"] == 'medium'
+                                    : data["status_bp"] == 'ปกติ'
                                         ? Color.fromARGB(255, 248, 210, 119)
                                         : Color.fromARGB(255, 97, 210, 164),
                                 borderRadius: BorderRadius.circular(20.0),
@@ -137,15 +143,13 @@ class _bpchartScreenState extends State<bpchartScreen>
                                 ],
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 1),
-                              child: Text("mmHg",
-                                  style: GoogleFonts.notoSansThai(
-                                      color: Colors.grey)),
-                            )
+                            Text("mmHg",
+                                style:
+                                    GoogleFonts.notoSansThai(color: Colors.grey))
                           ],
                         )),
                   ),
+                ),
               ],
             );
           },
@@ -386,64 +390,81 @@ class _bpchartScreenState extends State<bpchartScreen>
                 Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 5),
+                      padding: const EdgeInsets.only(top: 5, left: 13,right: 13),
                       child: Container(
+                        width: double.infinity,
                           decoration: BoxDecoration(
                               color: Color.fromARGB(255, 224, 224, 224),
                               borderRadius: BorderRadius.circular(10.0)),
                           child: SimpleScatterPlotChart.withSampleData()),
                     ),
                     Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: myinfo()),
+                        padding: const EdgeInsets.only(top: 20,left: 13,right: 13),
+                        child: Container(
+                          width: double.infinity,
+                          child: myinfo(),
+                        )
+                    ),
                   ],
                 ),
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 5),
+                      padding: const EdgeInsets.only(top: 5, left: 13,right: 13),
                       child: Container(
+                        width: double.infinity,
                           decoration: BoxDecoration(
                               color: Color.fromARGB(255, 224, 224, 224),
                               borderRadius: BorderRadius.circular(10.0)),
                           child: SimpleScatterPlotChart.withSampleData()),
                     ),
                     Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: myinfo())
+                        padding: const EdgeInsets.only(top: 20,left: 13,right: 13),
+                        child: Container(
+                          width: double.infinity,
+                          child: myinfo(),
+                        )
+                    ),
                   ],
                 ),
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 5),
+                      padding: const EdgeInsets.only(top: 5, left: 13,right: 13),
                       child: Container(
+                        width: double.infinity,
                           decoration: BoxDecoration(
                               color: Color.fromARGB(255, 224, 224, 224),
                               borderRadius: BorderRadius.circular(10.0)),
                           child: SimpleScatterPlotChart.withSampleData()),
                     ),
                     Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: myinfo())
+                        padding: const EdgeInsets.only(top: 20,left: 13,right: 13),
+                        child: Container(
+                          width: double.infinity,
+                          child: myinfo(),
+                        )
+                    ),
                   ],
                 ),
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 5),
+                      padding: const EdgeInsets.only(top: 5, left: 13,right: 13),
                       child: Container(
+                        width: double.infinity,
                           decoration: BoxDecoration(
                               color: Color.fromARGB(255, 224, 224, 224),
                               borderRadius: BorderRadius.circular(10.0)),
                           child: SimpleScatterPlotChart.withSampleData()),
                     ),
                     Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: myinfo())
+                        padding: const EdgeInsets.only(top: 20,left: 13,right: 13),
+                        child: Container(
+                          width: double.infinity,
+                          child: myinfo(),
+                        )
+                    ),
                   ],
                 ),
               ][_tabController.index],
